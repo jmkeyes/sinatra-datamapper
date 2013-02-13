@@ -1,39 +1,6 @@
-require 'sinatra/datamapper/version'
 require 'dm-core'
 
 module Sinatra
-  #
-  # Sinatra::DataMapper
-  # ===================
-  # Adds some syntactic sugar for setting up DataMapper with Sinatra.
-  #
-  # Example
-  # =======
-  #
-  #   #!/usr/bin/env ruby
-  #
-  #   require 'sinatra'
-  #   require 'data_mapper'
-  #   require 'sinatra/datamapper'
-  #
-  #   class Post
-  #     incude DataMapper::Resource
-  #
-  #     property :id,      Serial
-  #     property :title,   String
-  #     property :content, Text
-  #   end
-  #
-  #   configure do
-  #     set :datamapper_repositories, { default: 'sqlite3://#{Dir.pwd}/database.db' }
-  #     set :datamapper_log_level, :debug
-  #   end
-  #
-  #   get '/' do
-  #     @posts = Post.all
-  #     haml :posts
-  #   end
-  #
   module DataMapper
     def self.registered(app)
       # Setup the DataMapper logger information. TODO: Integrate with Sinatra/Rack CommonLogger if possible.
