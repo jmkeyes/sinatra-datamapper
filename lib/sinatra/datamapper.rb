@@ -10,16 +10,16 @@ module Sinatra
 
       # Create the logger instance itself.
       ::DataMapper::Logger.new(
-        settings.datamapper_log_path,
-        settings.datamapper_log_level,
-        settings.datamapper_log_prefix
+        app.settings.datamapper_log_path,
+        app.settings.datamapper_log_level,
+        app.settings.datamapper_log_prefix
       )
 
       # Load all configured repositories, defaulting to an in-memory sqlite3 database.
       app.set :datamapper_repositories, { :default => 'sqlite::memory:' }
 
       # Setup each repository, applying any specified naming conventions.
-      settings.datamapper_repositories.each do |name, uri_or_options|
+      app.settings.datamapper_repositories.each do |name, uri_or_options|
         if uri_or_options.is_a?(Hash)
           resource_scheme = uri_or_options.delete(:resource_naming_convention)
           field_scheme    = uri_or_options.delete(:field_naming_convention)
@@ -37,9 +37,9 @@ module Sinatra
       app.set :datamapper_models, proc { root && ::File.join(root, 'models') }
 
       # If we have any models available, load them.
-      if settings.datamapper_models
+      if app.settings.datamapper_models
         import = ::Kernel.method(:require)
-        pattern = settings.datamapper_models + '/**/*.rb'
+        pattern = app.settings.datamapper_models + '/**/*.rb'
         ::Dir[pattern].each(&import)
       end
 
